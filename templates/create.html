@@ -8,9 +8,14 @@
       type="text"
       name="name"
       placeholder="Contact name"
-      class="form-control"
+      class={%if 'name' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
       value="{{ request.form['name']  }}"
+      required
+      maxlength="100"
     />
+    {%if 'name' in errors%}
+    <span class="invalid-feedback">{{errors['name']}}</span>
+    {%endif%}
   </div>
   <div class="form-group">
     <label for="phone">Phone</label>
@@ -18,21 +23,30 @@
       type="text"
       name="phone"
       placeholder="Phone number"
-      class="form-control"
+      class={%if 'phone' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
       value="{{ request.form['phone']  }}"
+      pattern="\d*"
+      maxlength="10"
+      title="Only numbers allowed for phone number"
     />
+    {%if 'phone' in errors%}
+    <span class="invalid-feedback">{{errors['phone']}}</span>
+    {%endif%}
   </div>
   <div class="form-group">
     <label for="contact_type">Contact type</label>
     <select
       name="contact_type"
-      class="form-control"
+      class={%if 'contact_type' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
       value="{{ request.form['contact_type']  }}"
     >
       <option value="contact_type1">contact_type1</option>
       <option value="contact_type2">contact_type2</option>
       <option value="contact_type3">contact_type3</option>
     </select>
+    {%if 'contact_type' in errors%}
+    <span class="invalid-feedback">{{errors['contact_type']}}</span>
+    {%endif%}
   </div>
   <div class="form-group">
     <label for="birthdate">Birth date</label>
@@ -40,9 +54,13 @@
       type="date"
       name="birthdate"
       placeholder="birth date"
-      class="form-control"
+      class={%if 'birthdate' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
       value="{{ request.form['birthdate']  }}"
+      required
     />
+    {%if 'birthdate' in errors%}
+    <span class="invalid-feedback">{{errors['birthdate']}}</span>
+    {%endif%}
   </div>
   <div class="form-group">
     <label for="description">Description</label>
@@ -52,7 +70,8 @@
       placeholder="Contact description"
       class="form-control"
     >
-{{ request.form['description']  }}</textarea
+{{ request.form['description']  }}
+</textarea
     >
   </div>
   <div class="form-group">
