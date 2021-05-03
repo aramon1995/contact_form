@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% block content %}
+<h1>{% block title %} Welcome to Contact form {% endblock %}</h1>
+<form method="POST">
+  <div class="row">
+    <div class="col-11">
+      <div class="row">
+        <div class="col-3 form-group" style="padding: 0">
+          <button
+            class="form-control"
+            type="submit"
+            name="order_header"
+            value="CONTACT_NAME"
+            style="width: 100%"
+          >
+            Name
+          </button>
+        </div>
+        <div class="col-3" style="padding: 0">
+          <button
+            class="form-control"
+            type="submit"
+            name="order_header"
+            value="PHONE"
+            style="width: 100%"
+          >
+            Number
+          </button>
+        </div>
+        <div class="col-3" style="padding: 0">
+          <button
+            class="form-control"
+            type="submit"
+            name="order_header"
+            value="BIRTHDATE"
+            style="width: 100%"
+          >
+            Birth date
+          </button>
+        </div>
+        <div class="col-3" style="padding: 0">
+          <button
+            class="form-control"
+            type="submit"
+            name="order_header"
+            value="CONTACT_TYPE"
+            style="width: 100%"
+          >
+            Type
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{%for contact in contacts%}
+<div class="row">
+  <div class="col-11 align-self-center">
+    <div class="row">
+      <div class="col-3 text-center">{{contact['CONTACT_NAME']}}</div>
+      <div class="col-3 text-center">{{contact['PHONE']}}</div>
+      <div class="col-3 text-center">{{contact['BIRTHDATE']}}</div>
+      <div class="col-3 text-center">{{contact['CONTACT_TYPE']}}</div>
+    </div>
+  </div>
+  <div class="col-1">
+    <a
+      href="{{url_for('detailsContact', contact_name=contact['CONTACT_NAME'])}}"
+    >
+      Details
+    </a>
+  </div>
+</div>
+{%endfor%} {% endblock %}
