@@ -8,7 +8,7 @@ def get_all_contacts(order_by='contact_name', start=1, count=10):
     try:
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
-            f'SELECT * FROM contacts ORDER BY {order_by} LIMIT %s, %s', (start, count))
+            f'SELECT * FROM contacts ORDER BY {order_by} LIMIT %s, %s', ((start-1)*count, count))
         contacts = cursor.fetchall()
         cursor.execute('SELECT count(1) as count from contacts')
         number_of_pages = int(cursor.fetchone()['count']/count)+1
