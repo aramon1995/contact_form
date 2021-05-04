@@ -6,10 +6,10 @@ app = Flask(__name__)
 
 app.secret_key = 'some_secret_key'
 
-app.config['MYSQL_HOST'] = 'db_url'
-app.config['MYSQL_USER'] = 'db_user'
-app.config['MYSQL_PASSWORD'] = 'db_pass'
-app.config['MYSQL_DB'] = 'db_name'
+app.config['MYSQL_HOST'] = 'sql313.epizy.com'
+app.config['MYSQL_USER'] = 'epiz_28533986'
+app.config['MYSQL_PASSWORD'] = 'contactForm123@'
+app.config['MYSQL_DB'] = 'epiz_28533986_contact_form'
 ROWS_PER_PAGE = 10
 
 mysql.init_app(app)
