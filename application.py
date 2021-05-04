@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from .model import create_contact, edit_contact, get_all_contacts, get_contact, remove_contact, mysql
+from model import create_contact, edit_contact, get_all_contacts, get_contact, remove_contact, mysql
 import re
 
 app = Flask(__name__)
