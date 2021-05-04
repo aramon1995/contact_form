@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from .model import create_contact, edit_contact, get_all_contacts, get_contact, mysql
+from .model import create_contact, edit_contact, get_all_contacts, get_contact, remove_contact, mysql
 import re
 
 app = Flask(__name__)
 
 app.secret_key = 'some_secret_key'
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'aramon'
-app.config['MYSQL_PASSWORD'] = 'Profeazul1!'
-app.config['MYSQL_DB'] = 'contact_app'
+app.config['MYSQL_HOST'] = 'db_url'
+app.config['MYSQL_USER'] = 'db_user'
+app.config['MYSQL_PASSWORD'] = 'db_pass'
+app.config['MYSQL_DB'] = 'db_name'
 ROWS_PER_PAGE = 10
 
 mysql.init_app(app)
@@ -17,29 +17,27 @@ mysql.init_app(app)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    order_by = 'CONTACT_NAME'
+    order_by = 'contact_name'
     page = request.args.get('page', 1, type=int)
     if request.method == 'POST':
         order_by = request.form.get('order_header')
     try:
-        contacts, num_of_pages = get_all_contacts(order_by,page,ROWS_PER_PAGE)
+        contacts, num_of_pages = get_all_contacts(
+            order_by, page, ROWS_PER_PAGE)
     except Exception as e:
         return render_template('error_page.html', error=e)
-    return render_template('index.html', contacts=contacts, cur_page = page, pages = num_of_pages)
+    return render_template('index.html', contacts=contacts, cur_page=page, pages=num_of_pages)
 
 
-@app.route('/detailsContact/<string:contact_name>', methods=['GET', 'POST'])
-def detailsContact(contact_name):
-    try:
-        contact = get_contact(contact_name)
-    except Exception as e:
-        return render_template('error_page.html', error=e)
-    return render_template('details.html', contact=contact)
-
-
-@app.route('/editContact/<string:contact_name>', methods=['GET', 'POST'])
-def editContact(contact_name):
+@app.route('/editContact/<int:contact_id>', methods=['GET', 'POST'])
+def editContact(contact_id):
     if request.method == 'POST':
+        if request.form.get('edit_action') == 'REMOVE':
+            try:
+                remove_contact(contact_id)
+                return redirect(url_for('index'))
+            except Exception as e:
+                return render_template('error_page.html', error=e)
         birthdate = request.form['birthdate']
         contact_type = request.form['contact_type']
         phone = request.form['phone']
@@ -50,15 +48,16 @@ def editContact(contact_name):
         if validation_errors:
             return render_template('edit.html', errors=errors, contact={})
         try:
-            edit_contact(birthdate, contact_type, phone, desc, contact_name)
+            edit_contact(contact_id, contact_name, birthdate,
+                         contact_type, phone, desc)
+            return redirect(url_for('index'))
         except Exception as e:
             return render_template('error_page.html', error=e)
-        return redirect(url_for('index'))
     try:
-        contact = get_contact(contact_name)
+        contact = get_contact(contact_id)
+        return render_template('edit.html', contact=contact)
     except Exception as e:
         return render_template('error_page.html', error=e)
-    return render_template('edit.html', contact=contact)
 
 
 @app.route('/createContact', methods=['GET', 'POST'])

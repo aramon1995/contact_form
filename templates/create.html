@@ -1,23 +1,23 @@
 {% extends 'base.html' %} {% block content %}
-<h1>{% block title %} Create a New Contact {% endblock %}</h1>
 
 <form method="post">
-  <div class="form-group">
+<div class="row mt-4">
+  <div class="form-group col-sm-3 col-12">
     <label for="name">Name</label>
     <input
-      type="text"
-      name="name"
+    type="text"
+    name="name"
       placeholder="Contact name"
       class={%if 'name' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
       value="{{ request.form['name']  }}"
       required
       maxlength="100"
-    />
+      />
     {%if 'name' in errors%}
     <span class="invalid-feedback">{{errors['name']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-sm-3 col-12">
     <label for="phone">Phone</label>
     <input
       type="text"
@@ -28,15 +28,15 @@
       pattern="\d*"
       maxlength="10"
       title="Only numbers allowed for phone number"
-    />
+      />
     {%if 'phone' in errors%}
     <span class="invalid-feedback">{{errors['phone']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-sm-3 col-12">
     <label for="contact_type">Contact type</label>
     <select
-      name="contact_type"
+    name="contact_type"
       class={%if 'contact_type' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
       value="{{ request.form['contact_type']  }}"
     >
@@ -48,7 +48,7 @@
     <span class="invalid-feedback">{{errors['contact_type']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-sm-3 col-12">
     <label for="birthdate">Birth date</label>
     <input
       type="date"
@@ -62,7 +62,7 @@
     <span class="invalid-feedback">{{errors['birthdate']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-12">
     <label for="description">Description</label>
     <textarea
       id="summernote"
@@ -70,12 +70,13 @@
       placeholder="Contact description"
       class="form-control"
     >
-{{ request.form['description']  }}
+    {{ request.form['description']  }}
 </textarea
     >
   </div>
-  <div class="form-group">
+  <div class=" col-12 form-group">
     <button type="submit" class="btn btn-primary">Create</button>
   </div>
+</div>
 </form>
 {% endblock %}

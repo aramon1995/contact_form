@@ -1,103 +1,147 @@
 {% extends 'base.html' %} {% block content %}
-<h1>{% block title %} Welcome to Contact form {% endblock %}</h1>
 <form method="POST">
-  <div class="row">
-    <div class="col-11">
-      <div class="row">
-        <div class="col-3 form-group" style="padding: 0">
-          <button
-            class="form-control"
-            type="submit"
-            name="order_header"
-            value="CONTACT_NAME"
-            style="width: 100%"
-          >
-            Name
-          </button>
-        </div>
-        <div class="col-3" style="padding: 0">
-          <button
-            class="form-control"
-            type="submit"
-            name="order_header"
-            value="PHONE"
-            style="width: 100%"
-          >
-            Number
-          </button>
-        </div>
-        <div class="col-3" style="padding: 0">
-          <button
-            class="form-control"
-            type="submit"
-            name="order_header"
-            value="BIRTHDATE"
-            style="width: 100%"
-          >
-            Birth date
-          </button>
-        </div>
-        <div class="col-3" style="padding: 0">
-          <button
-            class="form-control"
-            type="submit"
-            name="order_header"
-            value="CONTACT_TYPE"
-            style="width: 100%"
-          >
-            Type
-          </button>
-        </div>
-      </div>
+  <div class="dropdown mt-4 mb-4 d-flex d-md-none">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      id="orderByMenu"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Name
+    </button>
+    <div class="dropdown-menu" aria-labelledby="orderByMenu">
+      <button
+        class="dropdown-item"
+        type="submit"
+        name="order_header"
+        value="contact_name"
+      >
+        Name
+      </button>
+      <button
+        class="dropdown-item"
+        type="submit"
+        name="order_header"
+        value="phone"
+      >
+        Number
+      </button>
+      <button class="dropdown-item" type="submit"
+      name="order_header"
+      value="birthdate"
+      style="width: 100%">Birth Date</button>
+      </button>
+      <button class="dropdown-item" type="submit"
+      
+        name="order_header"
+        value="contact_type"
+        style="width: 100%">Contact Type</button>
+    </div>
+  </div>
+  <div class="row mt-4 d-none d-md-flex">
+    <div class="col-3 form-group" style="padding: 0">
+      <button
+        class="form-control"
+        type="submit"
+        name="order_header"
+        value="contact_name"
+        style="width: 100%"
+      >
+        Name
+      </button>
+    </div>
+    <div class="col-3" style="padding: 0">
+      <button
+        class="form-control"
+        type="submit"
+        name="order_header"
+        value="phone"
+        style="width: 100%"
+      >
+        Number
+      </button>
+    </div>
+    <div class="col-3" style="padding: 0">
+      <button
+        class="form-control"
+        type="submit"
+        name="order_header"
+        value="birthdate"
+        style="width: 100%"
+      >
+        Birth date
+      </button>
+    </div>
+    <div class="col-3" style="padding: 0">
+      <button
+        class="form-control"
+        type="submit"
+        name="order_header"
+        value="contact_type"
+        style="width: 100%"
+      >
+        Type
+      </button>
     </div>
   </div>
 </form>
-{%for contact in contacts%}
-<div class="row">
-  <div class="col-11 align-self-center">
+<div class="row list-group">
+  {%for contact in contacts%}
+  <a
+    class="list-group-item list-group-item-action"
+    href="{{url_for('editContact', contact_id=contact['id'])}}"
+  >
     <div class="row">
-      <div class="col-3 text-center">{{contact['CONTACT_NAME']}}</div>
-      <div class="col-3 text-center">{{contact['PHONE']}}</div>
-      <div class="col-3 text-center">{{contact['BIRTHDATE']}}</div>
-      <div class="col-3 text-center">{{contact['CONTACT_TYPE']}}</div>
+      <div class="col-12 col-md-3 text-left text-md-center">
+        {{contact['contact_name']}}
+      </div>
+      <div class="col-12 col-md-3 text-left text-md-center">
+        {{contact['phone']}}
+      </div>
+      <div class="col-12 col-md-3 text-left text-md-center">
+        {{contact['birthdate']}}
+      </div>
+      <div class="col-12 col-md-3 text-left text-md-center">
+        {{contact['contact_type']}}
+      </div>
     </div>
-  </div>
-  <div class="col-1">
-    <a
-      href="{{url_for('detailsContact', contact_name=contact['CONTACT_NAME'])}}"
-    >
-      Details
-    </a>
+  </a>
+  {%endfor%}
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="text-sm-right text-center mt-4">
+      <a
+        href="{{ url_for('index', page=cur_page-1) }}"
+        class="btn btn-outline-dark {% if cur_page == 1 %}disabled{% endif %}"
+      >
+        &laquo;
+      </a>
+      {% for page_num in range(cur_page-1,cur_page+2) %} {% if cur_page ==
+      page_num %}
+      <a href="{{ url_for('index', page=page_num) }}" class="btn btn-dark">
+        {{ page_num }}
+      </a>
+      {% elif page_num>0 and page_num<=pages %}
+      <a
+        href="{{ url_for('index', page=page_num) }}"
+        class="btn btn-outline-dark"
+      >
+        {{ page_num }}
+      </a>
+      {% endif %}{% endfor %}
+      <a
+        href="{{ url_for('index', page=cur_page+1) }}"
+        class="btn btn-outline-dark {% if cur_page == pages %}disabled{% endif %}"
+      >
+        &raquo;
+      </a>
+    </div>
+    <p class="text-sm-right text-center mt-3">
+      Showing page {{ cur_page }} of {{ pages }}
+    </p>
   </div>
 </div>
-{%endfor%}
-<div class="text-right">
-  <a
-    href="{{ url_for('index', page=cur_page-1) }}"
-    class="btn btn-outline-dark {% if cur_page == 1 %}disabled{% endif %}"
-  >
-    &laquo;
-  </a>
-  <!-- Loop through the number of pages to display a link for each-->
-  {% for page_num in range(cur_page-1,cur_page+2) %}
-  <!-- Check for the active page and set the link to "Active"-->
-  {% if cur_page == page_num %}
-  <a href="{{ url_for('index', page=page_num) }}" class="btn btn-dark">
-    {{ page_num }}
-  </a>
-  {% elif page_num>0 and page_num<=pages %}
-  <a href="{{ url_for('index', page=page_num) }}" class="btn btn-outline-dark">
-    {{ page_num }}
-  </a>
-  {% endif %}{% endfor %}
-  <a
-    href="{{ url_for('index', page=cur_page+1) }}"
-    class="btn btn-outline-dark {% if cur_page == pages %}disabled{% endif %}"
-  >
-    &raquo;
-  </a>
-</div>
-<p class="text-right mt-3">
-  Showing page {{ cur_page }} of {{ pages }}
-</p>
 {% endblock %}

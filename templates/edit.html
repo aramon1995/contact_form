@@ -1,14 +1,15 @@
 {% extends 'base.html' %} {% block content %}
-<h1>{% block title %} Edit Contact {% endblock %}</h1>
 <form method="post">
-  <div class="form-group">
+<div class="row mt-4">
+  <div class="col-12 text-right mb-4"><button type="submit" class="btn btn-danger" value="REMOVE" name="edit_action">Remove</button></div>
+  <div class="form-group col-sm-3 col-12">
     <label for="name">Name</label>
     <input
       type="text"
       name="name"
       placeholder="Contact name"
       class={%if 'name' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
-      value="{{ request.form['name'] or contact['CONTACT_NAME']  }}"
+      value="{{ request.form['name'] or contact['contact_name']  }}"
       required
       maxlength="100"
     />
@@ -16,14 +17,14 @@
       <span class='invalid-feedback'>{{errors['name']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-sm-3 col-12">
     <label for="phone">Phone</label>
     <input
       type="text"
       name="phone"
       placeholder="Phone number"
       class={%if 'phone' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
-      value="{{ request.form['phone'] or contact['PHONE']  }}"
+      value="{{ request.form['phone'] or contact['phone']  }}"
       pattern="\d*"
       maxlength="10"
       title="Only numbers allowed for phone number"
@@ -32,36 +33,36 @@
       <span class='invalid-feedback'>{{errors['phone']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-sm-3 col-12">
     <label for="contact_type">Contact type</label>
     <select
       name="contact_type"
       class={%if 'contact_type' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
-      value="{{ request.form['contact_type'] or contact['CONTACT_TYPE']  }}"
+      value="{{ request.form['contact_type'] or contact['contact_type']  }}"
     >
-      <option value="contact_type1" {{'selected' if (request.form['contact_type'] or contact['CONTACT_TYPE'])=='contact_type1' else ''}}>contact_type1</option>
-      <option value="contact_type2" {{'selected' if (request.form['contact_type'] or contact['CONTACT_TYPE'])=='contact_type2' else ''}}>contact_type2</option>
-      <option value="contact_type3" {{'selected' if (request.form['contact_type'] or contact['CONTACT_TYPE'])=='contact_type3' else ''}}>contact_type3</option>
+      <option value="contact_type1" {{'selected' if (request.form['contact_type'] or contact['contact_type'])=='contact_type1' else ''}}>contact_type1</option>
+      <option value="contact_type2" {{'selected' if (request.form['contact_type'] or contact['contact_type'])=='contact_type2' else ''}}>contact_type2</option>
+      <option value="contact_type3" {{'selected' if (request.form['contact_type'] or contact['contact_type'])=='contact_type3' else ''}}>contact_type3</option>
     </select>
     {%if 'contact_type' in errors%}
       <span class='invalid-feedback'>{{errors['contact_type']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-sm-3 col-12">
     <label for="birthdate">Birth date</label>
     <input
       type="date"
       name="birthdate"
       placeholder="birth date"
       class={%if 'birthdate' in errors%}"form-control is-invalid"{%else%}"form-control"{%endif%}
-      value="{{ request.form['birthdate'] or contact['BIRTHDATE']  }}"
+      value="{{ request.form['birthdate'] or contact['birthdate']  }}"
       required
     />
     {%if 'birthdate' in errors%}
       <span class='invalid-feedback'>{{errors['birthdate']}}</span>
     {%endif%}
   </div>
-  <div class="form-group">
+  <div class="form-group col-12">
     <label for="description">Description</label>
     <textarea
       id="summernote"
@@ -69,11 +70,12 @@
       placeholder="Contact description"
       class="form-control"
     >
-{{ request.form['description'] or contact['DESCR']  }}
+{{ request.form['description'] or contact['descr']  }}
 </textarea>
   </div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-primary">Save</button>
+  <div class="form-group col-12">
+    <button type="submit" class="btn btn-primary" value="SAVE" name='edit_action'>Save</button>
+  </div>
   </div>
 </form>
 {% endblock %}
